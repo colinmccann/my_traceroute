@@ -37,7 +37,7 @@ func (tr *TraceRouteSession) traceRouteIpv4() {
 		os.Exit(1)
 	}
 
-	/* istantiate an ICMP echo request used in the traceroute process, payload is just an empty string because we do not need it */
+	/* instantiate an ICMP echo request used in the traceroute process, payload is just an empty string because we do not need it */
 	icmp_echo := icmp.Message{
 		Type: ipv4.ICMPTypeEcho, Code: 0, Body: &icmp.Echo{ID: rand.Int(), Data: []byte("")},
 	}
@@ -45,8 +45,11 @@ func (tr *TraceRouteSession) traceRouteIpv4() {
 	/* usual MTU size */
 	read_buf := make([]byte, 1500)
 
+	fmt.Println("Looping through the tr")
+
 	/* main logic is contained below */
 	for i := 1; i < tr.MaxTTL; i++ {
+
 		icmp_echo.Body.(*icmp.Echo).Seq = i
 
 		write_buffer, err := icmp_echo.Marshal(nil)
@@ -75,12 +78,15 @@ func (tr *TraceRouteSession) traceRouteIpv4() {
 			os.Exit(1)
 		}
 
+		fmt.Println("ReadFrom...")
 		read_bytes, _, hop_node, err := ipv4_sock.ReadFrom(read_buf)
+		fmt.Printf("RB: %v, HN: %v\n", read_bytes, hop_node)
 
 		/* network error or timeout, just skip and go to the next hop */
 		if err != nil {
 			fmt.Printf("%d %20s\n", i, "*")
 		} else { /* got an answer */
+			fmt.Println("imcp_answer...")
 			icmp_answer, err := icmp.ParseMessage(1, read_buf[:read_bytes])
 
 			if err != nil {
