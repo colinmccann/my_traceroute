@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"net"
 	"os"
@@ -86,7 +85,7 @@ func (tr *TraceRouteSession) traceRouteIpv4() {
 		/* network error or timeout, just skip and go to the next hop */
 		if err != nil {
 			fmt.Printf("%d %20s\n", i, "*")
-			log.Fatal(err)
+			fmt.Println(err)
 		} else { /* got an answer */
 			fmt.Println("imcp_answer...")
 			icmp_answer, err := icmp.ParseMessage(1, read_buf[:read_bytes])
