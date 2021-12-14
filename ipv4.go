@@ -84,7 +84,7 @@ func (tr *TraceRouteSession) traceRouteIpv4() {
 
 		/* network error or timeout, just skip and go to the next hop */
 		if err != nil {
-			fmt.Printf("%d %20s\n", i, "*")
+			// fmt.Printf("%d %20s\n", i, "*")
 			fmt.Println(err)
 		} else { /* got an answer */
 			fmt.Println("imcp_answer...")
