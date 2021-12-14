@@ -17,8 +17,9 @@ jobs:
       # - name: Go run
       #   run: |
       #     sudo go run . -remote "heisse.de"
+      - name: Setup
+        run: go version
       - name: Build
         run: go build -v ./...
       - name: Run the binary
-        run: |
-          sudo ./my_traceroute -remote "heisse.de"
+        run: sudo ./my_traceroute -remote "heisse.de"
